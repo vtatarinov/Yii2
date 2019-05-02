@@ -6,6 +6,8 @@ namespace app\components;
 
 use yii\base\Component;
 use app\models\Activity;
+use yii\helpers\FileHelper;
+use yii\web\UploadedFile;
 
 class ActivityComponent extends Component
 {
@@ -37,10 +39,52 @@ class ActivityComponent extends Component
 
     public function createActivity(&$model):bool
     {
+        $model->files = $this->getUploadedFile($model, 'files');
+
         if (!$model->validate()) {
-            print_r($model->getErrors());
+//            print_r($model->getErrors());
             return false;
         }
+        if ($model->files) {
+            foreach ($model->files as $file) {
+                $path = $this->genFilePath($this->genFileName($file));
+                if (!$this->saveUploadedFile($file, $path)) {
+                    $model->addError('file','Не удалось сохранить файл');
+                    return false;
+                } else {
+                    $model->filesView[] = basename($path);
+                }
+            }
+        }
         return true;
+    }
+
+    private function saveUploadedFile(UploadedFile $file, $path):bool
+    {
+        return $file->saveAs($path);
+    }
+
+    private function genFileName(UploadedFile $file)
+    {
+        $file = uniqid().'.'.$file->getExtension();
+        return $file;
+    }
+
+    private function genFilePath($fileName)
+    {
+        FileHelper::createDirectory(\Yii::getAlias('@webroot/images'));
+        $path = \Yii::getAlias('@webroot/images/'.$fileName);
+        return $path;
+    }
+
+    /**
+     * @param Activity $model
+     * @param $attr
+     * @return UploadedFile|null
+     */
+
+    private function getUploadedFile(Activity $model, $attr)
+    {
+        return UploadedFile::getInstances($model, $attr);
     }
 }
