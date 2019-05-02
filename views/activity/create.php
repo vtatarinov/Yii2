@@ -15,14 +15,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php $form = \yii\bootstrap\ActiveForm::begin([
 
     ]); ?>
-        <?= $form->field($model, 'title') ?>
-        <?= $form->field($model, 'description')->textarea() ?>
-        <?= $form->field($model, 'dateStart')->input('date') ?>
-        <?= $form->field($model, 'isBlocking')->checkbox() ?>
-        <?= $form->field($model, 'isRepeat')->checkbox() ?>
-        <?= $form->field($model, 'repeatInterval')->dropDownList(['0'=>'Час', '1' => 'День', '2' => 'Месяц', '3' => 'Год']) ?>
+        <?= $form->field($model, 'title'); ?>
+        <?= $form->field($model, 'description')->textarea(); ?>
+        <?= $form->field($model, 'dateStart')->textInput(['value' => \Yii::$app->formatter->asDate($model->startDate ?? 'now', 'php:d.m.Y')]); ?>
+        <?= $form->field($model, 'email',
+            ['enableClientValidation' => false,
+                'enableAjaxValidation' => true]); ?>
+        <?= $form->field($model, 'useNotification')->checkbox(); ?>
+        <?= $form->field($model, 'isBlocking')->checkbox(); ?>
+        <?= $form->field($model, 'isRepeat')->checkbox(); ?>
+        <?= $form->field($model, 'repeatInterval')->dropDownList($model->repeatInterval); ?>
+        <?= $form->field($model, 'files[]')->fileInput(['multiple' => true]); ?>
         <div class="form-group">
-            <?= Html::submitButton('Создать', ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton('Создать', ['class' => 'btn btn-primary']); ?>
+            <?= Html::a('Отмена',['/day'], ['class' => 'btn btn-danger']); ?>
         </div>
     <?php \yii\bootstrap\ActiveForm::end(); ?>
 </div>
