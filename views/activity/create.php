@@ -17,14 +17,15 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
         <?= $form->field($model, 'title'); ?>
         <?= $form->field($model, 'description')->textarea(); ?>
-        <?= $form->field($model, 'dateStart')->textInput(['value' => \Yii::$app->formatter->asDate($model->startDate ?? 'now', 'php:d.m.Y')]); ?>
+        <?= $form->field($model, 'dateStart')->textInput(['value' => \Yii::$app->formatter->asDate($model->dateStart ?? 'now', 'php:d.m.Y')]); ?>
+        <?= $form->field($model, 'dateEnd')->textInput(['value' => \Yii::$app->formatter->asDate($model->dateEnd ?? 'now', 'php:d.m.Y')]); ?>
         <?= $form->field($model, 'email',
             ['enableClientValidation' => false,
                 'enableAjaxValidation' => true]); ?>
         <?= $form->field($model, 'useNotification')->checkbox(); ?>
         <?= $form->field($model, 'isBlocking')->checkbox(); ?>
         <?= $form->field($model, 'isRepeat')->checkbox(); ?>
-        <?= $form->field($model, 'repeatInterval')->dropDownList($model->repeatInterval); ?>
+        <?= $form->field($model, 'repeatInterval')->dropDownList([0 => 'Выберите интервал повторения', 1 => 'Час', 2 => 'День', 3 => 'Месяц', 4 => 'Год']); ?>
         <?= $form->field($model, 'files[]')->fileInput(['multiple' => true]); ?>
         <div class="form-group">
             <?= Html::submitButton('Создать', ['class' => 'btn btn-primary']); ?>

@@ -6,44 +6,55 @@ namespace app\models;
 
 use yii\base\Model;
 
-class Activity extends Model
+class Activity extends ActivityBase
 {
-    public $title;
-    public $description;
-    public $dateStart;
-    public $email;
-    public $useNotification;
-    public $isBlocking;
-    public $isRepeat;
-    public $repeatInterval = [0 => 'Час', 1 => 'День', 2 => 'Месяц', 3 => 'Год'];
+//    public $title;
+//    public $description;
+//    public $dateStart;
+//    public $email;
+//    public $useNotification;
+//    public $isBlocking;
+//    public $isRepeat;
+//    public $repeatInterval = [0 => 'Выберите интервал повторения', 1 => 'Час', 2 => 'День', 3 => 'Месяц', 4 => 'Год'];
     public $files = [];
     public $filesView = [];
 
     public function beforeValidate()
     {
-        if (!empty($this->dateStart)) {
-            $date = \DateTime::createFromFormat('d.m.Y', $this->dateStart);
-            if ($date) {
-                $this->dateStart = $date->format('Y-m-d');
+        if (!empty($this->dateStart) || !empty($this->dateEnd)) {
+            $dateStart = \DateTime::createFromFormat('d.m.Y', $this->dateStart);
+            $dateEnd = \DateTime::createFromFormat('d.m.Y', $this->dateEnd);
+            if ($dateStart || $dateEnd) {
+                $this->dateStart = $dateStart->format('Y-m-d');
+                $this->dateEnd = $dateEnd->format('Y-m-d');
             }
         }
+
         return parent::beforeValidate();
     }
 
     public function rules()
     {
-        return [
+        return array_merge([
             ['title', 'required'],
             ['description', 'string', 'min' => 10],
-            ['dateStart', 'date', 'format' => 'php:Y-m-d'],
+            [['dateStart', 'dateEnd'], 'date', 'format' => 'php:Y-m-d'],
+            ['dateEnd', function($attribute, $params) {
+                if ($this->$attribute < $this->dateStart) {
+                    $this->addError($attribute, 'Дата окончания не может быть раньше даты начала.');
+                }
+            }],
             ['email', 'email'],
             ['email', 'required', 'when' => function($model) {
                 return $model->useNotification == 1;
             }],
             [['useNotification', 'isBlocking', 'isRepeat'], 'boolean'],
+            ['repeatInterval', 'required', 'when' => function($model) {
+                return $model->isRepeat == 1;
+            }],
 //            ['repeatInterval', 'in', 'range' => array_keys($this->repeatInterval)],
             ['files', 'file', 'extensions' => ['jpg', 'png', 'pdf'], 'maxFiles' => 4]
-        ];
+        ], parent::rules());
     }
 
     public function attributeLabels()
@@ -52,6 +63,7 @@ class Activity extends Model
             'title' => 'Заголовок',
             'description' => 'Описание',
             'dateStart' => 'Дата начала',
+            'dateEnd' => 'Дата окончания',
             'email' => 'E-mail',
             'useNotification' => 'Уведомлять',
             'isBlocking' => 'Блокирующее событие',
