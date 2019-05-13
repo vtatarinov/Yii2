@@ -13,8 +13,20 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
-        'activity' => ['class' => \app\components\ActivityComponent::class, 'activityClass' => '\app\models\Activity'],
-        'day' => ['class' => \app\components\DayComponent::class, 'dayClass' => '\app\models\Day'],
+        'authManager' => [
+            'class' => '\yii\rbac\DbManager'
+        ],
+        'activity' => [
+            'class' => \app\components\ActivityComponent::class,
+            'activityClass' => '\app\models\Activity'
+        ],
+        'day' => [
+            'class' => \app\components\DayComponent::class,
+            'dayClass' => '\app\models\Day'
+        ],
+        'rbac' => [
+            'class' => \app\components\RbacComponent::class
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'y_0ZNiV5wW6XII5c82d-h42ijcQw8h9s',
@@ -23,7 +35,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Users',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [

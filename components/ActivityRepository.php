@@ -37,5 +37,4 @@ class ActivityRepository extends Component
 
         return $model;
     }
-
 }
