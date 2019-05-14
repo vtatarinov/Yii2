@@ -19,5 +19,6 @@ use yii\helpers\Html;
             <?= Html::submitButton('Войти', ['class' => 'btn btn-primary']); ?>
         </div>
         <?php \yii\bootstrap\ActiveForm::end(); ?>
+        <?= Html::a('Зарегистрироваться', '/auth/sign-up');  ?>
     </div>
 </div>
