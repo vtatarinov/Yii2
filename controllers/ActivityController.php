@@ -5,8 +5,10 @@ namespace app\controllers;
 
 
 use app\base\BaseController;
+use app\components\ActivityComponent;
 use app\controllers\actions\ActivityCreateAction;
 use app\models\Activity;
+use app\models\ActivitySearch;
 use yii\web\HttpException;
 
 class ActivityController extends BaseController
@@ -22,6 +24,21 @@ class ActivityController extends BaseController
             'create' => ['class' => ActivityCreateAction::class, 'rbac' => $this->getRbac()],
             'edit' => ['class' => ActivityCreateAction::class, 'rbac' => $this->getRbac()]
         ];
+    }
+
+    public function actionIndex()
+    {
+        $component = \Yii::createObject(['class' => ActivityComponent::class, 'activityClass' => Activity::class]);
+        $activities = $component->getAllActivities();
+
+        $model = new ActivitySearch();
+        $provider = $model->getDataProvider(\Yii::$app->request->queryParams);
+
+        if (!$this->getRbac()->canViewActivity($model)) {
+            throw new HttpException(403, 'You do not have access to view activities');
+        }
+
+        return $this->render('index', ['activities' => $activities, 'model' => $model, 'provider' => $provider]);
     }
 
     public function actionView($id)

@@ -3,6 +3,10 @@
 /**
  * @var $this \yii\web\View
  * @var $users array
+ * @var $activityUser
+ * @var $activityNotification
+ * @var $firstActivity
+ * @var $countActivity
  */
 
 ?>
