@@ -40,9 +40,9 @@ class ActivityComponent extends Component
     public function createActivity(&$model):bool
     {
         $model->files = $this->getUploadedFile($model, 'files');
+        $model->userId = \Yii::$app->user->id;
 
-        if (!$model->validate()) {
-//            print_r($model->getErrors());
+        if (!$model->save()) {
             return false;
         }
         if ($model->files) {
