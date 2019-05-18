@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
         <?= $form->field($model, 'title'); ?>
         <?= $form->field($model, 'description')->textarea(); ?>
-        <?= $form->field($model, 'dateStart')->textInput(['value' => \Yii::$app->formatter->asDate($model->dateStart ?? 'now', 'php:d.m.Y')]); ?>
-        <?= $form->field($model, 'dateEnd')->textInput(['value' => \Yii::$app->formatter->asDate($model->dateEnd ?? 'now', 'php:d.m.Y')]); ?>
+        <?= $form->field($model, 'dateStart')->textInput(['value' => \Yii::$app->formatter->asDate($model->dateStart ?? 'now')]); ?>
+        <?= $form->field($model, 'dateEnd')->textInput(['value' => \Yii::$app->formatter->asDate($model->dateEnd ?? 'now')]); ?>
         <?= $form->field($model, 'email',
             ['enableClientValidation' => false,
                 'enableAjaxValidation' => true]); ?>

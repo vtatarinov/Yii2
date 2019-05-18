@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= Html::a('Создать',['/activity/create'], ['class' => 'btn btn-primary']); ?>
     <?= \yii\grid\GridView::widget([
         'dataProvider' => $provider,
+        'filterModel' => $model,
         'options' => [
             'class' => 'table-responsive'
         ],
@@ -26,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'layout' => "{summary}\n{pager}\n{items}\n{pager}",
         'columns' => [
+            'id',
             [
                 'attribute' => 'title',
                 'value' => function($model)
@@ -56,8 +58,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'isBlocking',
             'isRepeat',
             'repeatInterval',
-            'dateCreated',
-            'userId'
+            [
+                'attribute' => 'dateCreated',
+                'value' => function($model)
+                {
+                    return $model->getDateCreated();
+                }
+            ],
+            [
+                'attribute' => 'user.username'
+            ]
         ]
     ]); ?>
 </div>

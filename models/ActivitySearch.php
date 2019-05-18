@@ -4,25 +4,32 @@
 namespace app\models;
 
 
-use app\components\ActivityComponent;
 use yii\data\ActiveDataProvider;
 
 class ActivitySearch extends Activity
 {
     public function getDataProvider($params)
     {
-        $component = \Yii::createObject(['class' => ActivityComponent::class, 'activityClass' => Activity::class]);
-
-        $model = $component->getModel();
+        $model = new Activity();
 
         $query = $model::find();
+
+        $this->load($params);
 
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
                 'pageSize' => 5
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC
+                ]
             ]
         ]);
+
+        $query->andFilterWhere(['like', 'email', $this->email]);
+        $query->with('user');
 
         return $provider;
     }

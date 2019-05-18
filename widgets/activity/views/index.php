@@ -2,7 +2,7 @@
 
 /**
  * @var $this \yii\web\View
- * @var $activities \app\controllers\actions\ActivityIndexAction
+ * @var $activities \app\controllers\ActivityController
  */
 ?>
 <div class="table-responsive">

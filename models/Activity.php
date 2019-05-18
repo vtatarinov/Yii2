@@ -4,6 +4,8 @@
 namespace app\models;
 
 
+use app\behaviors\DateCreatedBehavior;
+
 class Activity extends ActivityBase
 {
 //    public $title;
@@ -16,6 +18,14 @@ class Activity extends ActivityBase
 //    public $repeatInterval = [0 => 'Выберите интервал повторения', 1 => 'Час', 2 => 'День', 3 => 'Месяц', 4 => 'Год'];
     public $files = [];
     public $filesView = [];
+
+    public function behaviors()
+    {
+        return [
+            ['class' => DateCreatedBehavior::class,
+                'attributeName' => 'dateCreated']
+        ];
+    }
 
     public function beforeValidate()
     {
