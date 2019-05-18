@@ -22,18 +22,22 @@ use yii\helpers\Html;
         </tr>
         <tr>
             <th scope="col">Дата начала</th>
-            <th><?= \Yii::$app->formatter->asDate($model->dateStart, 'php:d.m.Y'); ?></th>
+            <th><?= \Yii::$app->formatter->asDate($model->dateStart); ?></th>
         </tr>
         <?php if (isset($model->dateEnd)) {
             echo '<tr>
                     <th scope="col">Дата окончания</th>
-                    <th>'.\Yii::$app->formatter->asDate($model->dateEnd, 'php:d.m.Y').'</th>
+                    <th>'.\Yii::$app->formatter->asDate($model->dateEnd).'</th>
                   </tr>';
         }
         ?>
         <tr>
             <th scope="col">Автор</th>
             <th><?= $model->userId; ?></th>
+        </tr>
+        <tr>
+            <th scope="col">Создано</th>
+            <th><?= $model->getDateCreated(); ?></th>
         </tr>
         </tbody>
     </table>
