@@ -13,6 +13,9 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'formatter' => [
+            'dateFormat' => 'dd.MM.Y'
+        ],
         'authManager' => [
             'class' => '\yii\rbac\DbManager'
         ],

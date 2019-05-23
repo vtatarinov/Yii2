@@ -59,6 +59,12 @@ class ActivityComponent extends Component
         return true;
     }
 
+    public function getAllActivities()
+    {
+        $sql = 'SELECT * from activity';
+        return \Yii::$app->db->createCommand($sql)->queryAll();
+    }
+
     private function saveUploadedFile(UploadedFile $file, $path):bool
     {
         return $file->saveAs($path);
