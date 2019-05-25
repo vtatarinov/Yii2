@@ -20,7 +20,7 @@ class NotificationComponent extends Component
     {
         foreach ($activities as $activity) {
             if ($this->mailer->compose('activity', ['model' => $activity])
-                ->setFrom('')
+                ->setFrom(\Yii::$app->params['notificationUsername'])
                 ->setTo($activity->email)
                 ->setSubject('Событие на сегодня:')
                 ->send()) {

@@ -37,9 +37,9 @@ $config = [
             'enableSwiftMailerLogging' => true,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => '',
-                'username' => '',
-                'password' => '',
+                'host' => $params['notificationHost'],
+                'username' => $params['notificationUsername'],
+                'password' => $params['notificationPassword'],
                 'port' => '587',
                 'encryption' => 'tls'
             ]
