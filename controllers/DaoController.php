@@ -6,9 +6,18 @@ namespace app\controllers;
 
 use app\base\BaseController;
 use app\components\DAOComponent;
+use yii\filters\PageCache;
 
 class DaoController extends BaseController
 {
+
+    public function behaviors()
+    {
+        return [
+            ['class' => PageCache::class, 'only' => ['dao'], 'duration' => 10]
+        ];
+    }
+
     public function actionDao()
     {
         /** @var DAOComponent $comp */
@@ -32,5 +41,14 @@ class DaoController extends BaseController
             'activityNotification' => $activityNotification,
             'firstActivity' => $firstActivity,
             'countActivity' => $countActivity]);
+    }
+
+    public function actionCache()
+    {
+        \Yii::$app->cache->set('foo', 'bar');
+
+        $foo = \Yii::$app->cache->get('foo');
+
+        echo $foo.PHP_EOL;
     }
 }

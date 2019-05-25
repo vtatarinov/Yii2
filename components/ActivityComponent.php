@@ -59,12 +59,6 @@ class ActivityComponent extends Component
         return true;
     }
 
-    public function getAllActivities()
-    {
-        $sql = 'SELECT * from activity';
-        return \Yii::$app->db->createCommand($sql)->queryAll();
-    }
-
     private function saveUploadedFile(UploadedFile $file, $path):bool
     {
         return $file->saveAs($path);
@@ -92,5 +86,23 @@ class ActivityComponent extends Component
     private function getUploadedFile(Activity $model, $attr)
     {
         return UploadedFile::getInstances($model, $attr);
+    }
+
+    public function getAllActivities()
+    {
+        $sql = 'SELECT * from activity';
+        return \Yii::$app->db->createCommand($sql)->queryAll();
+    }
+
+    /**
+     * @param string $from
+     * @return Activity[]|array|\yii\db\ActiveRecord[]
+     */
+    public function getActivityWithNotification(string $from)
+    {
+        $activities = $this->getModel()::find()->andWhere(['useNotification' => 1,])
+            ->andWhere('dateStart >= :dateMin', [':dateMin' => $from])
+            ->andWhere('dateStart <= :dateMax', [':dateMax' => $from.' 23:59:59'])->all();
+        return $activities;
     }
 }
