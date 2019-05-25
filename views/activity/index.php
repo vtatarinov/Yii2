@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?= \app\widgets\activity\ActivityTableWidget::widget(['activities' => $activities]); ?>
     <?= Html::a('Создать',['/activity/create'], ['class' => 'btn btn-primary']); ?>
+    <?php if ($this->beginCache('page', ['duration' => 10])): ?>
     <?= \yii\grid\GridView::widget([
         'dataProvider' => $provider,
         'filterModel' => $model,
@@ -70,4 +71,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ]
         ]
     ]); ?>
+    <?php $this->endCache(); ?>
+    <?php endif; ?>
 </div>

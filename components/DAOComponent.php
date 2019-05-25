@@ -5,6 +5,8 @@ namespace app\components;
 
 
 use yii\base\Component;
+use yii\caching\DbDependency;
+use yii\caching\TagDependency;
 use yii\db\Connection;
 use yii\db\Query;
 
@@ -32,7 +34,7 @@ class DAOComponent extends Component
             ->limit(2)
             ->orderBy(['title' => SORT_DESC]);
 
-        return $query->all();
+        return $query->cache(10, new TagDependency(['tags' => 'tag1']))->all();
     }
 
     public function getFirstActivity()
@@ -40,6 +42,7 @@ class DAOComponent extends Component
         $query = new Query();
         return $query->from('activity')
             ->limit(3)
+            ->cache(10)
             ->one();
     }
 
@@ -48,6 +51,7 @@ class DAOComponent extends Component
         $query = new Query();
         return $query->from('activity')
             ->select('count(id) as count')
+            ->cache(10)
             ->scalar();
     }
 
@@ -55,7 +59,9 @@ class DAOComponent extends Component
     {
         $sql = 'SELECT * from activity WHERE userId = :user';
 
-        return $this->getDb()->createCommand($sql, [':user' => $userId])->queryAll();
+        return $this->getDb()->createCommand($sql, [':user' => $userId])
+            ->cache(10, new DbDependency(['sql' => 'SELECT MAX(id) FROM activity;']))
+            ->queryAll();
     }
 
     public function testInsert()
@@ -84,6 +90,6 @@ class DAOComponent extends Component
     {
         $sql = 'SELECT * from users';
 
-        return $this->getDb()->createCommand($sql)->queryAll();
+        return $this->getDb()->createCommand($sql)->cache(10)->queryAll();
     }
 }
