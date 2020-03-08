@@ -33,6 +33,9 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'y_0ZNiV5wW6XII5c82d-h42ijcQw8h9s',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser'
+            ]
         ],
         'cache' => [
             'class' => 'yii\caching\MemCache',
@@ -41,6 +44,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\Users',
             'enableAutoLogin' => true,
+//            'enableSession' => false
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -61,11 +65,30 @@ $config = [
                 ],
             ],
         ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'fileMap' => [
+                        'app' => 'app.php',
+                        'app/error' => 'error'
+                    ]
+                ]
+            ]
+        ],
         'db' => $db,
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'new' => 'activity/create',
+                'create' => 'activity/create',
+                'event/<action>' => 'activity/<action>',
+                'event/<action>/<id:\w+>' => 'activity/<action>',
+                [
+                    'class' => \yii\rest\UrlRule::class, 'controller' => 'rest',
+                    'pluralize' => false
+                ]
             ],
         ],
     ],

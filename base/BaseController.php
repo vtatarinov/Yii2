@@ -11,6 +11,8 @@ class BaseController extends Controller
 {
     public function beforeAction($action)
     {
+        \Yii::$app->language = \Yii::$app->session->get('lang', 'ru-RU');
+
         if (\Yii::$app->user->isGuest) {
             throw new HttpException(401, 'Need authorization');
         }

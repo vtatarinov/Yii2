@@ -65,19 +65,39 @@ class Activity extends ActivityBase
         ], parent::rules());
     }
 
-    public function attributeLabels()
+//    public function attributeLabels()
+//    {
+//        return [
+//            'title' => 'Заголовок',
+//            'description' => 'Описание',
+//            'dateStart' => 'Дата начала',
+//            'dateEnd' => 'Дата окончания',
+//            'email' => 'E-mail',
+//            'useNotification' => 'Уведомлять',
+//            'isBlocking' => 'Блокирующее событие',
+//            'isRepeat' => 'Повторять',
+//            'repeatInterval' => 'Повторять через',
+//            'files' => 'Добавить файлы'
+//        ];
+//    }
+
+    public function fields()
     {
         return [
-            'title' => 'Заголовок',
-            'description' => 'Описание',
-            'dateStart' => 'Дата начала',
-            'dateEnd' => 'Дата окончания',
-            'email' => 'E-mail',
-            'useNotification' => 'Уведомлять',
-            'isBlocking' => 'Блокирующее событие',
-            'isRepeat' => 'Повторять',
-            'repeatInterval' => 'Повторять через',
-            'files' => 'Добавить файлы'
+            'id', 'title', 'description', 'dateStart' => function($model)
+            {
+                return \Yii::$app->formatter->asDate($model->dateStart, 'php:d.m.Y');
+            }
+        ];
+    }
+
+    public function extraFields()
+    {
+        return [
+            'user' => function($model)
+            {
+                return $model->user->email;
+            }
         ];
     }
 }

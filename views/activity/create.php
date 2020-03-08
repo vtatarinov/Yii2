@@ -11,7 +11,8 @@ $this->title = 'Добавление события';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-activity-create">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Yii::t('app', 'Create Activity'); ?></h1>
+    <h4><?= Yii::t('app', 'For {user}', ['user' => Yii::$app->user->id]); ?></h4>
     <?php $form = \yii\bootstrap\ActiveForm::begin([
 
     ]); ?>

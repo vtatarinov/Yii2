@@ -4,16 +4,22 @@
 namespace app\components;
 
 
-use app\models\Activity;
-use yii\base\Component;
-use yii\console\Application;
-use yii\log\Logger;
+use app\components\logger\ILogger;
 use yii\mail\MailerInterface;
 
-class NotificationComponent extends Component
+class NotificationService implements Notification
 {
     /** @var MailerInterface */
-    public $mailer;
+    private $mailer;
+
+    /** @var ILogger */
+    private $logger;
+
+    public function __construct(MailerInterface $mailer, ILogger $logger)
+    {
+        $this->mailer = $mailer;
+        $this->logger = $logger;
+    }
 
     /**
      * @param $activities Activity[]
@@ -26,11 +32,7 @@ class NotificationComponent extends Component
                 ->setTo($activity->email)
                 ->setSubject('Событие на сегодня:')
                 ->send()) {
-                    if (\Yii::$app instanceof Application) {
-                        echo 'E-mail to '.$activity->email.' sended'.PHP_EOL;
-                    } else {
-                        \Yii::getLogger()->log('E-mail to '.$activity->email.' sended', Logger::LEVEL_INFO);
-                    }
+                    $this->logger->log('E-mail to '.$activity->email.' sended');
             }
         }
     }
