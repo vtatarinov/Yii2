@@ -6,12 +6,22 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', \app\config\PreConfig::class],
     'controllerNamespace' => 'app\commands',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
         '@tests' => '@app/tests',
+    ],
+    'container' => [
+        'singletons' => [
+            'app\components\Notification' => ['class' => 'app\components\NotificationService'],
+            'notification' => ['class' => \app\components\Notification::class],
+            \app\components\logger\ILogger::class => ['class' => \app\components\logger\LoggerConsole::class]
+        ],
+        'definitions' => [
+//            \app\models\Activity::class => ['class' => '']
+        ]
     ],
     'components' => [
         'activity' => [

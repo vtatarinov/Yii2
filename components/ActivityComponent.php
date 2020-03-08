@@ -29,7 +29,7 @@ class ActivityComponent extends Component
 
     public function getModel()
     {
-        return new $this->activityClass;
+        return \Yii::$container->get($this->activityClass);
     }
 
     /**

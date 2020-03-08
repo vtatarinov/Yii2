@@ -4,7 +4,7 @@
 namespace app\commands;
 
 
-use app\components\NotificationComponent;
+use app\components\Notification;
 use yii\console\Controller;
 
 class NotificationController extends Controller
@@ -35,9 +35,8 @@ class NotificationController extends Controller
             \Yii::$app->end();
         }
 
-        /** @var NotificationComponent $notificationComponent */
-        $notificationComponent = \Yii::createObject(['class' => NotificationComponent::class,
-            'mailer' => \Yii::$app->mailer]);
+        /** @var Notification $notificationComponent */
+        $notificationComponent = \Yii::$container->get('notification');
 
         $notificationComponent->sendActivity($activities);
     }
